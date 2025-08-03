@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+        This 'domain-config' is the key change.
+        The 'cleartextTrafficPermitted' is set to "true", allowing HTTP.
+    -->
+    <domain-config cleartextTrafficPermitted="true">
+        <!--
+            This rule applies only to the specific IP address of the emulator's host.
+            All other domains will be blocked from using cleartext traffic.
+        -->
+        <domain includeSubdomains="true">10.0.2.2</domain>
+    </domain-config>
+
+    <!--
+        This is the default configuration for all other network traffic.
+        It correctly blocks cleartext traffic for security.
+    -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
