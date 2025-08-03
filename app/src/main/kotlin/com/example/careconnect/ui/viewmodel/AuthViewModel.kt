@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.careconnect.data.model.User // <-- ADD THIS IMPORT
 import com.example.careconnect.data.repository.CareRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,6 +23,7 @@ data class AuthState(
 )
 
 @HiltViewModel
+// ✅ THIS IS THE CRITICAL FIX: Inject the CareRepository here.
 class AuthViewModel @Inject constructor(private val repository: CareRepository) : ViewModel() {
     var authState by mutableStateOf(AuthState())
         private set
@@ -59,13 +61,17 @@ class AuthViewModel @Inject constructor(private val repository: CareRepository) 
 
                 if (userId != null) {
                     // Step 2: Create user profile in Firestore
-                    val userProfile = hashMapOf(
-                        "uid" to userId,
-                        "name" to name,
-                        "email" to email,
-                        "role" to "Primary Caregiver", // Default role for new registration
-                        "careCircleId" to userId // New user becomes their own care circle initially
+                    // This now uses the User data class for consistency
+                    val userProfile = User(
+                        uid = userId,
+                        name = name,
+                        email = email,
+                        role = "Primary", // Use the shorter role name
+                        careCircleId = userId, // New user becomes their own care circle initially
+                        phone = "",
+                        address = ""
                     )
+
                     Firebase.firestore.collection("users").document(userId).set(userProfile).await()
                     authState = AuthState(isLoading = false)
                     onRegistrationSuccess()

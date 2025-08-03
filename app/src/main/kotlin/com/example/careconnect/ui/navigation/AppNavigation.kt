@@ -22,6 +22,7 @@ import com.example.careconnect.ui.screen.MessagingScreen
 import com.example.careconnect.ui.screen.ScheduleScreen
 import com.example.careconnect.ui.screen.admin.AdminScreen
 import com.example.careconnect.ui.screen.admin.CaregiversScreen
+import com.example.careconnect.ui.screen.admin.ProfileScreen
 import com.example.careconnect.ui.screen.auth.LoginScreen
 import com.example.careconnect.ui.screen.auth.RegistrationScreen
 import com.example.careconnect.ui.viewmodel.AuthViewModel
@@ -35,7 +36,8 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     data object Messages : Screen("messages", "Messages", Icons.AutoMirrored.Filled.Message)
     data object Journal : Screen("journal", "Journal", Icons.Default.Book)
     data object Admin : Screen("admin", "Admin", Icons.Default.Settings)
-    data object Caregivers : Screen("caregivers", "Care Circle", null)
+    data object Contacts : Screen("contacts", "Contact List", null)
+    data object Profile : Screen("profile", "Edit Profile", null)
 }
 
 object AuthRoute {
@@ -66,7 +68,6 @@ fun RootNavigationGraph(navController: NavHostController, modifier: Modifier = M
     NavHost(
         navController = navController,
         startDestination = AuthRoute.ROOT,
-        // 2. APPLIED THE MODIFIER HERE
         modifier = modifier
     ) {
         navigation(route = AuthRoute.ROOT, startDestination = AuthRoute.LOGIN) {
@@ -101,7 +102,8 @@ fun RootNavigationGraph(navController: NavHostController, modifier: Modifier = M
             composable(Screen.Messages.route) { MessagingScreen() }
             composable(Screen.Journal.route) { JournalScreen() }
             composable(Screen.Admin.route) { AdminScreen(navController = navController) }
-            composable(Screen.Caregivers.route) { CaregiversScreen(navController = navController) }
+            composable(Screen.Contacts.route) { CaregiversScreen(navController = navController) }
+            composable(Screen.Profile.route) { ProfileScreen(navController = navController) }
         }
     }
 }
@@ -114,7 +116,8 @@ fun getScreenFromRoute(route: String?): Screen? {
         Screen.Messages.route -> Screen.Messages
         Screen.Journal.route -> Screen.Journal
         Screen.Admin.route -> Screen.Admin
-        Screen.Caregivers.route -> Screen.Caregivers
+        Screen.Contacts.route -> Screen.Contacts
+        Screen.Profile.route -> Screen.Profile
         else -> null
     }
 }
