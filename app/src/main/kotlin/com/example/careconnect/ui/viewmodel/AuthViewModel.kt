@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.careconnect.data.model.User // <-- ADD THIS IMPORT
+import com.example.careconnect.data.model.User
 import com.example.careconnect.data.repository.CareRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -23,7 +23,6 @@ data class AuthState(
 )
 
 @HiltViewModel
-// ✅ THIS IS THE CRITICAL FIX: Inject the CareRepository here.
 class AuthViewModel @Inject constructor(private val repository: CareRepository) : ViewModel() {
     var authState by mutableStateOf(AuthState())
         private set
@@ -55,19 +54,19 @@ class AuthViewModel @Inject constructor(private val repository: CareRepository) 
         viewModelScope.launch {
             authState = AuthState(isLoading = true)
             try {
-                // Step 1: Create user in Auth
                 val authResult = auth.createUserWithEmailAndPassword(email, pass).await()
                 val userId = authResult.user?.uid
 
                 if (userId != null) {
-                    // Step 2: Create user profile in Firestore
-                    // This now uses the User data class for consistency
                     val userProfile = User(
                         uid = userId,
                         name = name,
                         email = email,
-                        role = "Primary", // Use the shorter role name
-                        careCircleId = userId, // New user becomes their own care circle initially
+                        role = "Primary Caregiver", // All new users will be Primary for now
+                        // ✅ THIS IS THE KEY CHANGE
+                        // We are now assigning EVERY user to the same hardcoded Care Circle ID.
+                        // This means they will all share the same journal and contact list.
+                        careCircleId = "SHARED_CARE_CIRCLE_ID_12345",
                         phone = "",
                         address = ""
                     )

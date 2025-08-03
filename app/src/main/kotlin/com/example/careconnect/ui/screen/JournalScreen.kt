@@ -18,6 +18,7 @@ import java.util.Locale
 @Composable
 fun JournalScreen(viewModel: JournalViewModel = hiltViewModel()) {
     val state by viewModel.uiState.collectAsState()
+    val entries by viewModel.entries.collectAsState()
 
     if (state.isAddEntryDialogOpen) {
         AddJournalEntryDialog(
@@ -41,9 +42,8 @@ fun JournalScreen(viewModel: JournalViewModel = hiltViewModel()) {
                 .padding(padding),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            reverseLayout = true // Show newest entries first
         ) {
-            items(state.entries, key = { it.id }) { entry ->
+            items(entries, key = { it.id ?: it.hashCode() }) { entry ->
                 JournalEntryCard(entry = entry)
             }
         }
@@ -84,6 +84,7 @@ private fun AddJournalEntryDialog(onDismiss: () -> Unit, onConfirm: (String) -> 
         text = {
             OutlinedTextField(
                 value = text,
+                // ✅ THIS IS THE FIXED LINE (hyphen removed)
                 onValueChange = { text = it },
                 label = { Text("Note") },
                 modifier = Modifier.fillMaxWidth()
