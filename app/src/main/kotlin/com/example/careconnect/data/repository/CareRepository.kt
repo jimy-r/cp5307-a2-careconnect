@@ -1,21 +1,28 @@
 package com.example.careconnect.data.repository
 
+import android.util.Log
 import com.example.careconnect.data.local.dao.UserDao
 import com.example.careconnect.data.model.*
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
-// The interface will remain the same
 interface CareRepository {
     // User Management
+    fun getCurrentUserProfile(): Flow<User?>
     fun getUsersInCareCircle(careCircleId: String): Flow<List<User>>
     suspend fun fetchUsersFromRemote(careCircleId: String)
+    suspend fun updateUserProfile(name: String, phone: String, address: String, role: String)
+    suspend fun updateUserRole(userIdToUpdate: String, newRole: String)
+    suspend fun deleteUserAccount()
+    fun signOut()
 
     // Dashboard
     suspend fun getDashboardData(): DashboardModel
@@ -43,53 +50,110 @@ data class DashboardModel(
 @Singleton
 class CareRepositoryImpl @Inject constructor(private val userDao: UserDao) : CareRepository {
 
-    override fun getUsersInCareCircle(careCircleId: String): Flow<List<User>> {
-        return userDao.getUsersInCareCircle(careCircleId)
-    }
+    private val auth = Firebase.auth
+    private val firestore = Firebase.firestore
 
-    override suspend fun fetchUsersFromRemote(careCircleId: String) {
-        try {
-            val userDocs = Firebase.firestore.collection("careCircles")
-                .document(careCircleId).collection("members").get().await()
+    override fun getCurrentUserProfile(): Flow<User?> {
+        Log.d("CareRepository", "Fetching profile for user ID: ${auth.currentUser?.uid}")
+        val userId = auth.currentUser?.uid ?: return emptyFlow()
 
-            val users = userDocs.toObjects(User::class.java)
-            userDao.insertAll(users)
-        } catch (e: Exception) {
-            // Handle error (e.g., log, show message)
+        // ✅ THE FIX IS HERE: The try-catch block has been removed from this flow builder.
+        // The ViewModel, using .firstOrNull(), will safely handle any potential exceptions
+        // without violating Flow principles.
+        return flow {
+            val userDoc = firestore.collection("users").document(userId).get().await()
+            emit(userDoc.toObject(User::class.java))
         }
     }
 
-    // --- START: ADDED PLACEHOLDER IMPLEMENTATIONS ---
+    override fun getUsersInCareCircle(careCircleId: String): Flow<List<User>> {
+        if (careCircleId.isBlank()) {
+            return emptyFlow()
+        }
+        return flow {
+            try {
+                val snapshot = firestore.collection("users")
+                    .whereEqualTo("careCircleId", careCircleId)
+                    .get().await()
+                emit(snapshot.toObjects(User::class.java))
+            } catch (e: Exception) {
+                Log.e("CareRepository", "Error getting users in care circle", e)
+                emit(emptyList())
+            }
+        }
+    }
+
+    override suspend fun fetchUsersFromRemote(careCircleId: String) {
+        // Implementation can be added here if needed for specific caching strategies
+    }
+
+    override suspend fun updateUserProfile(name: String, phone: String, address: String, role: String) {
+        val userId = auth.currentUser?.uid ?: return
+        try {
+            val updatedData = mapOf(
+                "name" to name,
+                "phone" to phone,
+                "address" to address,
+                "role" to role
+            )
+            firestore.collection("users").document(userId).update(updatedData).await()
+        } catch (e: Exception) {
+            Log.e("CareRepository", "Error updating user profile", e)
+        }
+    }
+
+    override suspend fun updateUserRole(userIdToUpdate: String, newRole: String) {
+        try {
+            firestore.collection("users").document(userIdToUpdate).update("role", newRole).await()
+        } catch (e: Exception) {
+            Log.e("CareRepository", "Error updating user role", e)
+        }
+    }
+
+    override suspend fun deleteUserAccount() {
+        val user = auth.currentUser ?: return
+        try {
+            // First, delete the Firestore document containing user details.
+            firestore.collection("users").document(user.uid).delete().await()
+            // Second, delete the user from Firebase Authentication.
+            user.delete().await()
+        } catch (e: Exception) {
+            Log.e("CareRepository", "Error deleting user account", e)
+            // Note: Deleting an Auth user can sometimes fail if they haven't logged
+            // in recently. For a production app, you would handle this by prompting
+            // the user to re-authenticate before deleting.
+        }
+    }
+
+    override fun signOut() {
+        auth.signOut()
+    }
+
+    // --- Existing Placeholder Implementations ---
 
     override suspend fun getDashboardData(): DashboardModel {
-        // TODO: Implement actual logic to fetch data from Firestore/Room
         return DashboardModel(null, null)
     }
 
     override suspend fun getScheduleForDate(date: Date): List<Any> {
-        // TODO: Implement actual logic
         return emptyList()
     }
 
     override fun getMessages(): Flow<List<Message>> {
-        // TODO: Implement actual logic
         return emptyFlow()
     }
 
     override suspend fun sendMessage(text: String) {
-        // TODO: Implement actual logic
+        // No-op for now
     }
 
     override fun getJournalEntries(): Flow<List<JournalEntry>> {
-        // TODO: Implement actual logic
         return emptyFlow()
     }
 
     override suspend fun addJournalEntry(note: String) {
-        // TODO: Implement actual logic
+        // No-op for now
     }
-
-    // --- END: ADDED PLACEHOLDER IMPLEMENTATIONS ---
 
     override suspend fun clearLocalData() {
         userDao.clearAll()

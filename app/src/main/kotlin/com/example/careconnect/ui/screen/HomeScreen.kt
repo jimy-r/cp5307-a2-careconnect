@@ -21,7 +21,6 @@ import java.util.*
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.uiState.collectAsState()
-    val user = viewModel.currentUser
 
     Column(
         modifier = Modifier
@@ -29,8 +28,10 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // ✅ UPDATED: This now gets the name from the user profile in our state object.
+        // It will show "Loading..." briefly, then update to the user's real name.
         Text(
-            "Welcome, ${user?.displayName ?: "Caregiver"}",
+            text = "Welcome, ${state.userProfile?.name ?: "Loading..."}",
             style = MaterialTheme.typography.headlineMedium
         )
 
