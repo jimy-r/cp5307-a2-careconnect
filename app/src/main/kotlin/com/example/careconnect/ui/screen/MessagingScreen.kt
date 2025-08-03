@@ -20,14 +20,17 @@ import kotlinx.coroutines.launch
 @Composable
 fun MessagingScreen(viewModel: MessagingViewModel = hiltViewModel()) {
     val state by viewModel.uiState.collectAsState()
+    val messages by viewModel.messages.collectAsState()
+    val currentUserId = viewModel.currentUserId
+
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
     // Scroll to bottom when a new message appears
-    LaunchedEffect(state.messages.size) {
-        if (state.messages.isNotEmpty()) {
+    LaunchedEffect(messages.size) {
+        if (messages.isNotEmpty()) {
             coroutineScope.launch {
-                listState.animateScrollToItem(state.messages.lastIndex)
+                listState.animateScrollToItem(messages.lastIndex)
             }
         }
     }
@@ -50,8 +53,9 @@ fun MessagingScreen(viewModel: MessagingViewModel = hiltViewModel()) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(vertical = 8.dp)
         ) {
-            items(state.messages, key = { it.id }) { message ->
-                ChatBubble(message = message)
+            // Providing a fallback key.
+            items(messages, key = { it.id ?: it.hashCode() }) { message ->
+                ChatBubble(message = message, currentUserId = currentUserId)
             }
         }
     }
@@ -88,10 +92,11 @@ private fun MessageInputBar(text: String, onTextChange: (String) -> Unit, onSend
 }
 
 @Composable
-private fun ChatBubble(message: Message) {
-    val alignment = if (message.isFromCurrentUser) Alignment.CenterEnd else Alignment.CenterStart
-    val backgroundColor = if (message.isFromCurrentUser) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
-    val textColor = if (message.isFromCurrentUser) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+private fun ChatBubble(message: Message, currentUserId: String?) {
+    val isFromCurrentUser = message.senderId == currentUserId
+    val alignment = if (isFromCurrentUser) Alignment.CenterEnd else Alignment.CenterStart
+    val backgroundColor = if (isFromCurrentUser) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
+    val textColor = if (isFromCurrentUser) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
 
     Box(
         modifier = Modifier.fillMaxWidth(),
@@ -103,7 +108,7 @@ private fun ChatBubble(message: Message) {
             colors = CardDefaults.cardColors(containerColor = backgroundColor)
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
-                if (!message.isFromCurrentUser) {
+                if (!isFromCurrentUser) {
                     Text(message.senderName, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.height(4.dp))
                 }

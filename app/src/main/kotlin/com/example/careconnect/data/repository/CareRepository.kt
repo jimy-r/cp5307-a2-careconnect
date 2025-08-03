@@ -59,8 +59,6 @@ class CareRepositoryImpl @Inject constructor(private val userDao: UserDao) : Car
     private val auth = Firebase.auth
     private val firestore = Firebase.firestore
 
-    // ✅ FULL IMPLEMENTATIONS ARE NOW PROVIDED FOR ALL FUNCTIONS
-
     override fun getCurrentUserProfile(): Flow<User?> {
         Log.d("CareRepository", "Fetching profile for user ID: ${auth.currentUser?.uid}")
         val userId = auth.currentUser?.uid ?: return emptyFlow()
@@ -88,7 +86,7 @@ class CareRepositoryImpl @Inject constructor(private val userDao: UserDao) : Car
     }
 
     override suspend fun fetchUsersFromRemote(careCircleId: String) {
-        // Implementation can be added here if needed for specific caching strategies
+        // Implementation can be added here if needed
     }
 
     override suspend fun updateUserProfile(name: String, phone: String, address: String, role: String) {
@@ -158,11 +156,61 @@ class CareRepositoryImpl @Inject constructor(private val userDao: UserDao) : Car
     }
 
     override fun getMessages(): Flow<List<Message>> {
-        return emptyFlow()
+        val userId = auth.currentUser?.uid ?: return emptyFlow()
+        return flow {
+            try {
+                val userDoc = firestore.collection("users").document(userId).get().await()
+                val careCircleId = userDoc.getString("careCircleId")
+
+                if (careCircleId != null && careCircleId.isNotBlank()) {
+                    // Explicitly define the type of the Flow
+                    val messagesFlow: Flow<List<Message>> = callbackFlow {
+                        val listener = firestore.collection("careCircles").document(careCircleId)
+                            .collection("messages")
+                            .orderBy("timestamp", Query.Direction.ASCENDING)
+                            .addSnapshotListener { snapshot, error ->
+                                if (error != null) {
+                                    close(error)
+                                    return@addSnapshotListener
+                                }
+                                if (snapshot != null) {
+                                    // Explicitly tell toObjects which class to use
+                                    val messages = snapshot.toObjects(Message::class.java)
+                                    trySend(messages)
+                                }
+                            }
+                        awaitClose { listener.remove() }
+                    }
+                    emitAll(messagesFlow) // The compiler now knows what type this is
+                }
+            } catch (e: Exception) {
+                Log.e("CareRepository", "Could not fetch messages", e)
+                emit(emptyList())
+            }
+        }
     }
 
+    // ✅ REPLACED: Placeholder for sendMessage now writes to Firestore.
     override suspend fun sendMessage(text: String) {
-        // No-op for now
+        val user = auth.currentUser ?: return
+        try {
+            val userDoc = firestore.collection("users").document(user.uid).get().await()
+            val userName = userDoc.getString("name") ?: "Unknown User"
+            val careCircleId = userDoc.getString("careCircleId")
+
+            if (careCircleId != null && careCircleId.isNotBlank()) {
+                val newMessage = Message(
+                    senderId = user.uid,
+                    senderName = userName,
+                    text = text,
+                    timestamp = Date()
+                )
+                firestore.collection("careCircles").document(careCircleId)
+                    .collection("messages").add(newMessage).await()
+            }
+        } catch (e: Exception) {
+            Log.e("CareRepository", "Error sending message", e)
+        }
     }
 
     override fun getJournalEntries(): Flow<List<JournalEntry>> {

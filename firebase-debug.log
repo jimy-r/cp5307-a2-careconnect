@@ -1,32 +1,32 @@
-[debug] [2025-08-03T03:19:33.393Z] ----------------------------------------------------------------------
-[debug] [2025-08-03T03:19:33.396Z] Command:       C:\Users\jimy\GitHub\CP5307~1\firebase.exe.exe C:\Users\jimy\.cache\firebase\tools\lib\node_modules\firebase-tools\lib\bin\firebase emulators:start
-[debug] [2025-08-03T03:19:33.396Z] CLI Version:   14.11.2
-[debug] [2025-08-03T03:19:33.396Z] Platform:      win32
-[debug] [2025-08-03T03:19:33.396Z] Node Version:  v20.18.2
-[debug] [2025-08-03T03:19:33.396Z] Time:          Sun Aug 03 2025 13:19:33 GMT+1000 (Australian Eastern Standard Time)
-[debug] [2025-08-03T03:19:33.396Z] ----------------------------------------------------------------------
+[debug] [2025-08-03T05:52:07.247Z] ----------------------------------------------------------------------
+[debug] [2025-08-03T05:52:07.249Z] Command:       C:\Users\jimy\GitHub\CP5307~1\firebase.exe.exe C:\Users\jimy\.cache\firebase\tools\lib\node_modules\firebase-tools\lib\bin\firebase emulators:start
+[debug] [2025-08-03T05:52:07.250Z] CLI Version:   14.11.2
+[debug] [2025-08-03T05:52:07.250Z] Platform:      win32
+[debug] [2025-08-03T05:52:07.250Z] Node Version:  v20.18.2
+[debug] [2025-08-03T05:52:07.250Z] Time:          Sun Aug 03 2025 15:52:07 GMT+1000 (Australian Eastern Standard Time)
+[debug] [2025-08-03T05:52:07.250Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2025-08-03T03:19:33.638Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2025-08-03T03:19:33.638Z] > authorizing via signed-in user (bai.james@gmail.com)
-[debug] [2025-08-03T03:19:33.786Z] java version "24.0.2" 2025-07-15
+[debug] [2025-08-03T05:52:07.480Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-08-03T05:52:07.480Z] > authorizing via signed-in user (bai.james@gmail.com)
+[debug] [2025-08-03T05:52:07.556Z] java version "24.0.2" 2025-07-15
 
-[debug] [2025-08-03T03:19:33.787Z] Java(TM) SE Runtime Environment (build 24.0.2+12-54)
+[debug] [2025-08-03T05:52:07.556Z] Java(TM) SE Runtime Environment (build 24.0.2+12-54)
 Java HotSpot(TM) 64-Bit Server VM (build 24.0.2+12-54, mixed mode, sharing)
 
-[debug] [2025-08-03T03:19:33.801Z] Parsed Java major version: 24
+[debug] [2025-08-03T05:52:07.571Z] Parsed Java major version: 24
 [info] i  emulators: Starting emulators: auth, firestore {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, firestore"}}
-[debug] [2025-08-03T03:19:33.811Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2025-08-03T03:19:33.811Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2025-08-03T03:19:33.811Z] [firestore] Firestore Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2025-08-03T03:19:33.811Z] [firestore.websocket] websocket server for firestore only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2025-08-03T03:19:33.812Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}]},"metadata":{"message":"assigned listening specs for emulators"}}
-[debug] [2025-08-03T03:19:33.816Z] [hub] writing locator at C:\Users\jimy\AppData\Local\Temp\hub-careconnect-9c893.json
-[debug] [2025-08-03T03:19:33.824Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
-[debug] [2025-08-03T03:19:33.824Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
-[debug] [2025-08-03T03:19:33.825Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\jimy\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.19.8.jar","--host","127.0.0.1","--port",8080,"--websocket_port",9150,"--project_id","careconnect-9c893","--rules","C:\\Users\\jimy\\GitHub\\cp5307-a2-careconnect\\firestore.rules","--single_project_mode",true],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false,"port":8080} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\jimy\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.19.8.jar\",\"--host\",\"127.0.0.1\",\"--port\",8080,\"--websocket_port\",9150,\"--project_id\",\"careconnect-9c893\",\"--rules\",\"C:\\\\Users\\\\jimy\\\\GitHub\\\\cp5307-a2-careconnect\\\\firestore.rules\",\"--single_project_mode\",true],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false,\"port\":8080}"}}
+[debug] [2025-08-03T05:52:07.581Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-08-03T05:52:07.582Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-08-03T05:52:07.582Z] [firestore] Firestore Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-08-03T05:52:07.582Z] [firestore.websocket] websocket server for firestore only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-08-03T05:52:07.582Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2025-08-03T05:52:07.586Z] [hub] writing locator at C:\Users\jimy\AppData\Local\Temp\hub-careconnect-9c893.json
+[debug] [2025-08-03T05:52:07.595Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2025-08-03T05:52:07.595Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2025-08-03T05:52:07.595Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\jimy\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.19.8.jar","--host","127.0.0.1","--port",8080,"--websocket_port",9150,"--project_id","careconnect-9c893","--rules","C:\\Users\\jimy\\GitHub\\cp5307-a2-careconnect\\firestore.rules","--single_project_mode",true],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false,"port":8080} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\jimy\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.19.8.jar\",\"--host\",\"127.0.0.1\",\"--port\",8080,\"--websocket_port\",9150,\"--project_id\",\"careconnect-9c893\",\"--rules\",\"C:\\\\Users\\\\jimy\\\\GitHub\\\\cp5307-a2-careconnect\\\\firestore.rules\",\"--single_project_mode\",true],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false,\"port\":8080}"}}
 [info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
 [info] +  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
-[debug] [2025-08-03T03:19:42.273Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[debug] [2025-08-03T05:52:16.111Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
 [info] 
 ┌─────────────────────────────────────────────────────────────┐
 │ ✔  All emulators ready! It is now safe to connect your app. │
