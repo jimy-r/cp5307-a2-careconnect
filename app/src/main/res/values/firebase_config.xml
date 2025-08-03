@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pulled from google-services.json -->
+    <string name="google_app_id" translatable="false">1:439070470315:android:d48fad6d012ff8441a87ee</string>
+    <string name="project_id" translatable="false">careconnect-9c893</string>
+    <string name="gcm_defaultSenderId" translatable="false">439070470315</string>
+    <string name="google_api_key" translatable="false">AIzaSyCCETROdICdGDk_gN2vzZnsHBVWldLG2Ig</string>
+    <string name="google_storage_bucket" translatable="false">careconnect-9c893.firebasestorage.app</string>
+</resources>

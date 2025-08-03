@@ -27,6 +27,9 @@ local.properties
 # Google Services (usually committed, but can be ignored if needed)
 # google-services.json
 
+# Local development tools
+firebase.exe
+
 # Crashlytics
 crashlytics-build.properties
 com_crashlytics_export_strings.xml
