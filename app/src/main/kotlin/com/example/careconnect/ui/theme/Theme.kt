@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalView // Provides the current Android Vi
 import androidx.core.view.WindowCompat // A compatibility helper for controlling window features like system bars.
 
 // Defines the static color palette for the app's dark theme.
-// These `md_theme_dark_*` values are typically defined in another file (e.g. Color.kt).
+// These `md_theme_dark_*` values are typically defined in another file (e.g. Colour.kt).
 private val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
@@ -96,10 +96,10 @@ fun CareConnectTheme(
 ) {
     // This 'when' block selects the correct color scheme based on the function's parameters.
     val colorScheme = when {
-        // If dynamic color is enabled and the OS is Android 12 (SDK 31) or higher...
+        // If dynamic colour is enabled and the OS is Android 12 (SDK 31) or higher...
         dynamicColour && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            // ...use the dynamic color scheme (dark or light) from the user's wallpaper.
+            // ...use the dynamic colour scheme (dark or light) from the user's wallpaper.
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         // If not using dynamic color, check if dark theme is enabled.
@@ -115,15 +115,15 @@ fun CareConnectTheme(
         // SideEffect is used to safely perform actions on non-Compose objects after a recomposition.
         SideEffect {
             val window = (view.context as Activity).window
-            // Set the status bar color to the theme's primary color.
+            // Set the status bar colour to the theme's primary colour.
             window.statusBarColor = colorScheme.primary.toArgb()
-            // Control the color of status bar icons (time, battery).
+            // Control the colour of status bar icons (time, battery).
             // NOTE: This logic is likely incorrect. It should be `!darkTheme` to ensure icons are light on a dark theme and vice-versa.
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
 
-    // Applies the chosen colors and typography to the entire UI content passed into the function.
+    // Applies the chosen colours and typography to the entire UI content passed into the function.
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography, // 'Typography' is defined in Typography.kt
