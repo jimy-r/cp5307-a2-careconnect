@@ -30,6 +30,9 @@ google-services.json
 # Local development tools
 firebase.exe
 
+# Local development tools
+firebase.exe
+
 # Crashlytics
 crashlytics-build.properties
 com_crashlytics_export_strings.xml
