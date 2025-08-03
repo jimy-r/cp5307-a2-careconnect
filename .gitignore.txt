@@ -25,7 +25,7 @@ local.properties
 *.keystore
 
 # Google Services (usually committed, but can be ignored if needed)
-# google-services.json
+google-services.json
 
 # Local development tools
 firebase.exe
